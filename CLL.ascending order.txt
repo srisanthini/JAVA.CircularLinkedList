@@ -1,0 +1,79 @@
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class CircularLinkedList {
+    Node head = null;
+    Node tail = null;
+
+    void insert(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = tail = newNode;
+            tail.next = head;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+            tail.next = head;
+        }
+    }
+
+    void display() {
+        if (head == null) {
+            System.out.println("List is empty");
+            return;
+        }
+        Node temp = head;
+        do {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        } while (temp != head);
+        System.out.println();
+    }
+
+    void sort() {
+        if (head == null || head.next == head) return;
+
+        Node current = head;
+        do {
+            Node index = current.next;
+            while (index != head) {
+                if (current.data > index.data) {
+                    int temp = current.data;
+                    current.data = index.data;
+                    index.data = temp;
+                }
+                index = index.next;
+            }
+            current = current.next;
+        } while (current.next != head); // stop at last node
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        CircularLinkedList cll = new CircularLinkedList();
+
+        System.out.println("Enter number of elements:");
+        int n = sc.nextInt();
+
+        System.out.println("Enter elements:");
+        for (int i = 0; i < n; i++) {
+            cll.insert(sc.nextInt());
+        }
+
+        cll.sort();
+
+        System.out.println("Sorted Circular Linked List:");
+        cll.display();
+    }
+}
